@@ -14,8 +14,8 @@ import os
 from sunstock_init import load_config
 
 # Load the config file of project of initializing the project
-# sunstock_conf = load_config('info_home.conf')
-sunstock_conf = load_config('info_elit.conf')
+sunstock_conf = load_config('info.conf')
+# sunstock_conf = load_config('info_elit.conf')
 DATABASE_CONF = sunstock_conf['DATABASE']
 INFO_CONF = sunstock_conf['INFO']
 

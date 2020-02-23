@@ -7,5 +7,6 @@ from django.views.generic import (View)
 
 
 class Index(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return HttpResponse('API index of SunStock Management')
