@@ -45,3 +45,14 @@ class LoginTemplate(View):
         password = request.POST.get('password')
 
         return account_login(request, username, password)
+
+
+class AutoLogin(View):
+    @staticmethod
+    def get(request, *args, **kwargs):
+        if request.session.has_key('session_username'):
+            return JsonResponse({'type': AccountState.CONNECTED.value,
+                                 'message': 'auto_login_success'})
+        else:
+            return JsonResponse({'type': AccountState.DISCONNECTED.value,
+                                 'message': 'auto_login_failed'})

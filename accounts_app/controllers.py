@@ -5,8 +5,6 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from .enums import AccountState
 
-from time import time
-
 
 def account_login(request, username: str, password: str) -> JsonResponse:
     """
@@ -48,7 +46,6 @@ def create_session(request, username):
     """
 
     request.session['session_username'] = username
-    request.session['session_expire'] = time() + 4 * (60 ** 3)
 
     return True
 
@@ -61,7 +58,6 @@ def delete_session(request):
     """
     try:
         del request.session['session_username']
-        del request.session['session_expire']
     except KeyError:
         pass
 
