@@ -1,5 +1,6 @@
 .idea/*
 venvPy/*
+__pycache__/
 sun_stock/__pycache__/
 accounts_app/__pycache__/
 accounts_app/migrations/
