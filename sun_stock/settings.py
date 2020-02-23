@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from sunstock_init import load_config
+
+# Load the config file of project of initializing the project
+# sunstock_conf = load_config('info_home.conf')
+sunstock_conf = load_config('info_elit.conf')
+DATABASE_CONF = sunstock_conf['DATABASE']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,12 +86,12 @@ DATABASES = {
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sun_stock',
-        'USER': 'root',
-        'PASSWORD': '2015',
-        'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'ENGINE': DATABASE_CONF['ENGINE'],
+        'NAME': DATABASE_CONF['NAME'],
+        'USER': DATABASE_CONF['USER'],
+        'PASSWORD': DATABASE_CONF['PASSWORD'],
+        'HOST': DATABASE_CONF['HOST'],
+        'PORT': DATABASE_CONF['PORT'],
     }
 }
 
