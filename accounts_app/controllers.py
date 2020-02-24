@@ -62,3 +62,7 @@ def delete_session(request):
         pass
 
     return True
+
+
+def check_session():
+    pass
