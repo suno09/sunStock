@@ -34,7 +34,7 @@ SECRET_KEY = 'lkkn9sh&li!xagc@2phz*8mchb92xdmm@rmofoa$kcop#tuwv_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', INFO_CONF['LOCAL_ADDRESS']]
 
 # Application definition
 
@@ -153,3 +153,6 @@ MEDIA_URL = "/media/"
 # LOGIN_URL = "/login_app/user_login"
 # Session
 SESSION_COOKIE_AGE = int(INFO_CONF['SESSION_COOKIE_AGE'])
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

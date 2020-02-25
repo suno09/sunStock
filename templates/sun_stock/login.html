@@ -14,14 +14,15 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="index.php"><b>COMPANY_NAME </b>ADMIN</a>
+      <a href="/"><b>COMPANY_NAME </b>ADMIN</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Connectez-vous pour commencer votre session</p>
 
-        <form action="index.php" method="post" autocomplete="on">
+        <form action="/" method="post" autocomplete="on">
+          {% csrf_token %}
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Nom d'utilisateur" name="username" autofocus required>
             <div class="input-group-append">

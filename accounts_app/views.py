@@ -3,8 +3,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (View)
 
-from .controllers import account_login
-from .enums import AccountState
+from controllers.enums import AccountState
+from controllers.account_controller import account_login
 
 
 # Create your views here.

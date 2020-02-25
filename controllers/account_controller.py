@@ -1,12 +1,12 @@
 """
 This file is based on the actions of views.py
 """
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from .enums import AccountState
 
 
-def account_login(request, username: str, password: str) -> JsonResponse:
+def account_login(request, username: str, password: str) -> AccountState:
     """
     account_login to login to server
     :param request: request param
@@ -21,20 +21,11 @@ def account_login(request, username: str, password: str) -> JsonResponse:
         if user.is_active:
             login(request=request, user=user)
             create_session(request, username)
-            return JsonResponse({
-                'type': AccountState.CONNECTED.value,
-                'message': 'connected'
-            })
+            return AccountState.CONNECTED
         else:
-            return JsonResponse({
-                'type': AccountState.NOT_ACTIVE.value,
-                'message': 'account not active'
-            })
+            return AccountState.NOT_ACTIVE
     else:
-        return JsonResponse({
-            'type': AccountState.FAILED.value,
-            'message': 'Invalid account'
-        })
+        return AccountState.FAILED
 
 
 def create_session(request, username):
@@ -66,3 +57,8 @@ def delete_session(request):
 
 def check_session():
     pass
+
+
+def account_logout(request):
+    logout(request)
+    delete_session(request)
