@@ -1,5 +1,7 @@
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import (View, TemplateView)
 
 from controllers.account_controller import account_login, account_logout
@@ -16,24 +18,19 @@ logger = logging.getLogger(__name__)
 class Index(View):
     @staticmethod
     def get(request, *args, **kwargs):
+        logger.error(request.user)
         if 'session_username' in request.session:
             logger.error("Index View get")
             template_name = 'sun_stock/index.html'
 
             return render(request, template_name, {})
-            # JsonResponse({
-            #     'type': AccountState.CONNECTED.value,
-            #     'message': 'account not active'
-            # })
         else:
             return redirect('/login')
 
     @staticmethod
     def post(request, *args, **kwargs):
-        return JsonResponse({
-                'type': AccountState.CONNECTED.value,
-                'message': 'account not active'
-            })
+        logger.error(request.POST.get('password'))
+        return redirect('/')
 
 
 class Login(View):
@@ -53,10 +50,6 @@ class Login(View):
             response_login: AccountState = account_login(request, username, password)
             if response_login == AccountState.CONNECTED:
                 return redirect('/')
-                # return JsonResponse({
-                #     'type': AccountState.CONNECTED.value,
-                #     'message': 'account not active'
-                # })
             elif response_login == AccountState.NOT_ACTIVE:
                 return JsonResponse({
                     'type': AccountState.NOT_ACTIVE.value,
