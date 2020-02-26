@@ -21,7 +21,7 @@
       <div class="card-body login-card-body">
         <p class="login-box-msg">Connectez-vous pour commencer votre session</p>
 
-        <form action="/" method="post" autocomplete="on">
+        <form action="login" method="post" autocomplete="on">
           {% csrf_token %}
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Nom d'utilisateur" name="username" autofocus required>

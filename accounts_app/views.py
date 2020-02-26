@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (View)
+from django.contrib.auth.decorators import login_required
 
 from controllers.enums import AccountState
 from controllers.account_controller import account_login
@@ -11,7 +13,10 @@ from controllers.account_controller import account_login
 # The classes are based on CBV
 
 
-class Index(View):
+class Index(LoginRequiredMixin, View):
+    # login_url = '/'
+    # redirect_field_name = ''
+
     @staticmethod
     def get(request):
         return HttpResponse('API index of accounts app')
@@ -50,7 +55,7 @@ class LoginTemplate(View):
 class AutoLogin(View):
     @staticmethod
     def get(request, *args, **kwargs):
-        if request.session.has_key('session_username'):
+        if request.session.has_key('username'):
             return JsonResponse({'type': AccountState.CONNECTED.value,
                                  'message': 'auto_login_success'})
         else:

@@ -18,10 +18,10 @@ from django.urls import path, re_path, include
 from .views import Index, Login, Logout
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    re_path(r'^$', Index.as_view()),
-    re_path(r'^login$', Login.as_view()),
-    re_path(r'^logout$', Logout.as_view()),
+    path('admin/', admin.site.urls, name='sun_stock_admin'),
+    re_path(r'^$', Index.as_view(), name='sun_stock_index'),
+    re_path(r'^login$', Login.as_view(), name='sun_stock_login'),
+    re_path(r'^logout$', Logout.as_view(), name='sun_stock_logout'),
     re_path(r'^accounts/',
             include('accounts_app.urls', namespace='accounts_app')),
 ]

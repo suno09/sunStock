@@ -9,14 +9,14 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- New user  data-target="#modal-new-user"-->
-        <?php if (isset($_SESSION['session_cpage']) && $_SESSION['session_cpage'] == 'user') { ?>
+        {% if request.session.cpage == 'user' %}
             <li class="nav-item">
                 <a class="nav-link" href="#" onclick="init_form_new_user();">
                     <i class="fas fa-user-plus"></i>
                     Nouveau Utilisateur
                 </a>
             </li>
-        <?php } ?>
+        {% endif %}
         <!-- Logout Menu -->
         <li class="nav-item" data-toggle="modal" data-target="#modal-logout">
             <a class="nav-link" href="#">
@@ -53,7 +53,7 @@
 <script>
     function logout() {
         var a = document.createElement("a");
-        a.href = "index.php?logout";
+        a.href = "logout";
         var clickEvent = new MouseEvent("click", {
             "view": window,
             "bubbles": true,
@@ -63,8 +63,6 @@
     }
 </script>
 
-<?php
-if (isset($_SESSION['session_cpage']) && $_SESSION['session_cpage'] == 'user') {
-    include_once('user/new_user.php');
-}
-?>
+{% if request.session.cpage == 'user' %}
+{% include 'accounts_app/new_user.html' %}
+{% endif %}

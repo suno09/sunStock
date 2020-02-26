@@ -1,13 +1,13 @@
+import logging
+
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic import (View, TemplateView)
+from django.shortcuts import render
+from django.views.generic import (View)
 
 from controllers.account_controller import account_login, account_logout
 from controllers.enums import AccountState
+from controllers.urls import redirect_by_name
 
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -18,24 +18,19 @@ logger = logging.getLogger(__name__)
 class Index(View):
     @staticmethod
     def get(request, *args, **kwargs):
-        logger.error(request.user)
-        if 'session_username' in request.session:
-            logger.error("Index View get")
+        if 'username' in request.session:
+            request.session['cpage'] = 'index'
             template_name = 'sun_stock/index.html'
 
             return render(request, template_name, {})
         else:
-            return redirect('/login')
-
-    @staticmethod
-    def post(request, *args, **kwargs):
-        logger.error(request.POST.get('password'))
-        return redirect('/')
+            return redirect_by_name('sun_stock_login')
 
 
 class Login(View):
     @staticmethod
     def get(request, *args, **kwargs):
+        request.session['cpage'] = 'login'
         template_name = "sun_stock/login.html"
 
         return render(request, template_name, {})
@@ -49,7 +44,7 @@ class Login(View):
 
             response_login: AccountState = account_login(request, username, password)
             if response_login == AccountState.CONNECTED:
-                return redirect('/')
+                return redirect_by_name()
             elif response_login == AccountState.NOT_ACTIVE:
                 return JsonResponse({
                     'type': AccountState.NOT_ACTIVE.value,
@@ -72,4 +67,4 @@ class Logout(View):
     def get(request, *args, **kwargs):
         account_logout(request)
 
-        return redirect('/')
+        return redirect_by_name()

@@ -18,6 +18,7 @@ sunstock_conf = load_config('info.conf')
 # sunstock_conf = load_config('info_elit.conf')
 DATABASE_CONF = sunstock_conf['DATABASE']
 INFO_CONF = sunstock_conf['INFO']
+CLIENT_CONF = sunstock_conf['CLIENT']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -153,6 +154,8 @@ MEDIA_URL = "/media/"
 # LOGIN_URL = "/login_app/user_login"
 # Session
 SESSION_COOKIE_AGE = int(INFO_CONF['SESSION_COOKIE_AGE'])
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
+# LOGOUT_REDIRECT_URL = '/'

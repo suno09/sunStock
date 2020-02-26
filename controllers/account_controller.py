@@ -2,6 +2,7 @@
 This file is based on the actions of views.py
 """
 from django.contrib.auth import authenticate, login, logout
+from django.conf import settings
 from django.http import JsonResponse
 from .enums import AccountState
 
@@ -36,7 +37,9 @@ def create_session(request, username):
     :return: boolean of successful or failure
     """
 
-    request.session['session_username'] = username
+    request.session['username'] = username
+    request.session['company_name'] = settings.CLIENT_CONF['COMPANY_NAME']
+    request.session['company_version'] = settings.CLIENT_CONF['COMPANY_VERSION']
 
     return True
 
@@ -48,7 +51,7 @@ def delete_session(request):
     :return: boolean of successful
     """
     try:
-        del request.session['session_username']
+        del request.session['username']
     except KeyError:
         pass
 
