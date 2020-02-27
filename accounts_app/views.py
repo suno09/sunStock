@@ -2,9 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import (View)
-from django.contrib.auth.decorators import login_required
+from django.views.generic import (View, ListView)
 
+from accounts_app.models import UserInfo
 from controllers.enums import AccountState
 from controllers.account_controller import account_login
 
@@ -13,13 +13,19 @@ from controllers.account_controller import account_login
 # The classes are based on CBV
 
 
-class Index(LoginRequiredMixin, View):
+class Index(LoginRequiredMixin, ListView):
     # login_url = '/'
     # redirect_field_name = ''
+    context_object_name = 'user_infos'
+    model = UserInfo
 
-    @staticmethod
-    def get(request):
-        return HttpResponse('API index of accounts app')
+    def get_context_data(self, **kwargs):
+        if self.request.method == 'GET':
+            context = super(Index, self).get_context_data(**kwargs)
+            filter_ = UserInfo.objects.filter()
+
+            context['count'] = self.get_queryset().count()
+            return context
 
 
 # csrf_exempt = disable csrf
@@ -50,14 +56,3 @@ class LoginTemplate(View):
         password = request.POST.get('password')
 
         return account_login(request, username, password)
-
-
-class AutoLogin(View):
-    @staticmethod
-    def get(request, *args, **kwargs):
-        if request.session.has_key('username'):
-            return JsonResponse({'type': AccountState.CONNECTED.value,
-                                 'message': 'auto_login_success'})
-        else:
-            return JsonResponse({'type': AccountState.DISCONNECTED.value,
-                                 'message': 'auto_login_failed'})

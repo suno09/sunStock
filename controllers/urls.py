@@ -8,4 +8,4 @@ def redirect_by_name(name='sun_stock_index'):
 
 
 def redirect_by_url(url='/'):
-    redirect(url)
+    return redirect(url)

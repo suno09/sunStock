@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views.generic import (View)
@@ -15,16 +16,16 @@ logger = logging.getLogger(__name__)
 # The classes are based on CBV
 
 
-class Index(View):
+class Index(LoginRequiredMixin, View):
     @staticmethod
     def get(request, *args, **kwargs):
-        if 'username' in request.session:
-            request.session['cpage'] = 'index'
-            template_name = 'sun_stock/index.html'
+        request.session['cpage'] = 'index'
+        template_name = 'sun_stock/index.html'
 
-            return render(request, template_name, {})
-        else:
-            return redirect_by_name('sun_stock_login')
+        return render(request, template_name, {})
+
+# csrf_exempt = disable csrf
+# @method_decorator(csrf_exempt, name='dispatch')
 
 
 class Login(View):
@@ -38,11 +39,14 @@ class Login(View):
     @staticmethod
     def post(request: HttpRequest, *args, **kwargs):
         post_keys = map(lambda k: k.lower(), request.POST.keys())
-        if 'login' in post_keys:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
 
-            response_login: AccountState = account_login(request, username, password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        response_login: AccountState = account_login(request, username, password)
+
+        # Login in html page
+        if 'login_template' in post_keys:
             if response_login == AccountState.CONNECTED:
                 return redirect_by_name()
             elif response_login == AccountState.NOT_ACTIVE:
