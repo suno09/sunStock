@@ -20,4 +20,4 @@ class UserInfo(models.Model):
 
     def __str__(self):
         return f'UserInfo{{user="{self.user.username}", ' \
-               f'rank="{self.rank.name}"}}'
+               f'rank="{self.rank}"}}'

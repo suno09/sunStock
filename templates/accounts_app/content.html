@@ -1,4 +1,4 @@
-<?php
+<!--<?php
 include_once('models/database.model.php');
 
 $nshow = 10;
@@ -19,7 +19,7 @@ $result = Database::execute_query_with_prepared_statement(
     from users where active=1 and id_user > 1 order by username limit ?, ?;",
     array($npage * $nshow, $nshow)
 );
-?>
+?>-->
 <section class="content">
     <div class="card">
         <div class="card-header">
@@ -45,46 +45,39 @@ $result = Database::execute_query_with_prepared_statement(
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $i = $npage * $nshow + 1;
-                    while ($row = $result->fetch_assoc()) { ?>
+                    {% for row in result_set %}
                         <tr>
-                            <td>
-                                <?php echo $i; ?>
-                            </td>
-                            <td>
-                                <?php echo $row['username']; ?>
-                            </td>
-                            <td>
-                                <?php echo $row['rolen']; ?>
-                            </td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ row.user }}</td>
+                            <td>{{ row.get_rank_display }}</td>
                             <td class="project-actions text-left">
-                                <a class="btn btn-info btn-sm" title="Modifier" href="#" onclick="init_form_edit_user(<?php echo $row['id_user']; ?>);">
+                                <a class="btn btn-info btn-sm" title="Modifier" href="#" onclick="init_form_edit_user({{ row.user.id }});">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                 </a>
-                                <a class="btn btn-success btn-sm" title="Changer mot de passe" href="#" onclick="init_form_change_password(<?php echo $row['id_user']; ?>);">
+                                <a class="btn btn-success btn-sm" title="Changer mot de passe" href="#" onclick="init_form_change_password({{ row.user.id }});">
                                     <i class="fas fa-key">
                                     </i>
                                 </a>
-                                <a class="btn btn-danger btn-sm" title="Supprimer" href="#" onclick="init_form_delete_user(<?php echo $row['id_user']; ?>);">
+                                <a class="btn btn-danger btn-sm" title="Supprimer" href="#" onclick="init_form_delete_user({{ row.user.id }});">
                                     <i class="fas fa-trash">
                                     </i>
                                 </a>
                             </td>
                         </tr>
-                    <?php $i++;
-                    } ?>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
             <ul class="pagination pagination-sm m-0 float-right">
-                <?php if ($npage > 0) { ?>
-                    <li class="page-item"><a class="page-link" href="index.php?user&npage=<?php echo $npage-1; ?>">&laquo;</a></li>
-                <?php } if (($npage+1) * $nshow < $len_users) { ?>
-                    <li class="page-item"><a class="page-link" href="index.php?user&npage=<?php echo $npage+1; ?>">&raquo;</a></li>
-                <?php } ?>
+                {% if npage > 0 %}
+                    <li class="page-item"><a class="page-link" href="index.php?user&npage={{ npage|add:'-1' }}">&laquo;</a></li>
+                {% endif %}
+                {% if npage|add:1|mul:nshow < count %}
+                    <li class="page-item"><a class="page-link" href="index.php?user&npage={{ npage|add:'1' }}">&raquo;</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
