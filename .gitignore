@@ -1,5 +1,5 @@
 .idea/*
-venvPy/*
+venv/*
 __pycache__/
 sun_stock/__pycache__/
 accounts_app/__pycache__/
